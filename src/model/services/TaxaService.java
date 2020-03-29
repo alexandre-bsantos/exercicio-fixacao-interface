@@ -2,5 +2,5 @@ package model.services;
 
 public interface TaxaService {
 
-	public Double valorTaxa(double valorParcela);
+	public double valorTaxa(double valorTotal, int numParcelas);
 }
