@@ -11,7 +11,6 @@ public class Parcela {
 	}
 
 	public Parcela(Date dataParcela, Double valorParcela) {
-		super();
 		this.dataParcela = dataParcela;
 		this.valorParcela = valorParcela;
 	}

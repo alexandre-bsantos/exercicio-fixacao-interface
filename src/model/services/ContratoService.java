@@ -1,44 +1,34 @@
 package model.services;
-
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import model.entities.Contrato;
 
 public class ContratoService {
 
-	private Integer numParcelas;
-	private TaxaService taxaService;
+	private PagamentoService pagamentoService;
+	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public ContratoService() {
 	}
 	
-	public ContratoService(Integer numParcelas, TaxaService taxaService) {
-		this.numParcelas = numParcelas;
-		this.taxaService = taxaService;
-	}
-
-	public Integer getNumParcelas() {
-		return numParcelas;
-	}
-
-	public void setNumParcelas(Integer numParcelas) {
-		this.numParcelas = numParcelas;
-	}
-
-	public TaxaService getTaxaService() {
-		return taxaService;
-	}
-
-	public void setTaxaService(TaxaService taxaService) {
-		this.taxaService = taxaService;
+	public ContratoService(PagamentoService pagamentoService) {
+		this.pagamentoService = pagamentoService;
 	}
 	
-	public void valoresParcela(Contrato contrato) {
+	public void processoContratual(Contrato contrato, Integer meses) {
 		Calendar cal = Calendar.getInstance();
-		for (int i = 1; i <= numParcelas; i++) {
-			taxaService.valorTaxa(contrato.getTotalValue(), numParcelas);
-			cal.get(cal.get(Calendar.MONTH + 1));
+		Date dataParcela = contrato.getData();
+		cal.setTime(dataParcela);
+		double valorContrato = contrato.getTotalValue() / meses;
+		
+		for (int i = 1; i <= meses; i++) {
+			cal.add(Calendar.MONTH, 1);
+			dataParcela = cal.getTime();
+			pagamentoService.valorTaxa(valorContrato, i);
+			System.out.println(sdf.format(dataParcela) + " - " + String.format("%.2f", pagamentoService.valorTaxa(valorContrato, i)));
+		
 		}
 	}
-	
 }
